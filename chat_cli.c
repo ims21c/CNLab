@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <strings.h>
-#include <fcntl.h>
-#include <sys/socket.h>
+#include <stdio.h> // í‘œì¤€ ì…ì¶œë ¥ ë¼ì´ë¸ŒëŸ¬ë¦¬
+#include <stdlib.h> // ë¬¸ìì—´ ë³€í™˜, ì˜ì‚¬ ë‚œìˆ˜ ìƒì„±, ë™ì  ë©”ëª¨ë¦¬ ê´€ë¦¬ ë“±ì˜ í•¨ìˆ˜ë“¤ì„ í¬í•¨
+#include <string.h> // ë©”ëª¨ë¦¬ ë¸”ë¡ì´ë‚˜ ë¬¸ìì—´ì„ ë‹¤ë£° ìˆ˜ ìˆëŠ” í•¨ìˆ˜ë“¤ì„ í¬í•¨
+#include <strings.h> // BSDì—ì„œ ì‚¬ìš©ë˜ëŠ” POSIXë¡œ êµ¬í˜„ëœ string í—¤ë”
+#include <fcntl.h>	// íŒŒì¼ì»¨íŠ¸ë¡¤ì„ ìœ„í•œ í—¤ë”
+#include <sys/socket.h> // ì†Œì¼“ í”„ë¡œê·¸ë˜ë°ì„ ìœ„í•œ í—¤ë”
 #include <netinet/in.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -13,24 +13,24 @@
 #define NAME_LEN    20
 
 char *EXIT_STRING= "exit";
-// ¼ÒÄÏ »ı¼º ¹× ¼­¹ö ¿¬°á, »ı¼ºµÈ ¼ÒÄÏ¸®ÅÏ
+// ì†Œì¼“ ìƒì„± ë° ì„œë²„ ì—°ê²°, ìƒì„±ëœ ì†Œì¼“ë¦¬í„´
 int tcp_connect(int af, char *servip, unsigned short port);
 void errquit(char *mesg) { perror(mesg); exit(1); }
 
 int main(int argc, char *argv[]) {
-	char bufall[MAXLINE+NAME_LEN], // ÀÌ¸§+¸Ş½ÃÁö¸¦ À§ÇÑ ¹öÆÛ
-	     *bufmsg;  // bufall ¿¡¼­ ¸Ş½ÃÁöºÎºĞÀÇ Æ÷ÀÎÅÍ
-	int maxfdp1, s, namelen;   // ÃÖ´ë ¼ÒÄÏ¹øÈ£, ¼ÒÄÏ µğ½ºÅ©¸³ÅÍ, ÀÌ¸§±æÀÌ
+	char bufall[MAXLINE+NAME_LEN], // ì´ë¦„+ë©”ì‹œì§€ë¥¼ ìœ„í•œ ë²„í¼
+	     *bufmsg;  // bufall ì—ì„œ ë©”ì‹œì§€ë¶€ë¶„ì˜ í¬ì¸í„°
+	int maxfdp1, s, namelen;   // ìµœëŒ€ ì†Œì¼“ë²ˆí˜¸, ì†Œì¼“ ë””ìŠ¤í¬ë¦½í„°, ì´ë¦„ê¸¸ì´
 	fd_set read_fds;
 
 	if(argc != 4) {
-		printf("»ç¿ë¹ı : %s sever_ip  port name \n", argv[0]);
+		printf("ì‚¬ìš©ë²• : %s sever_ip  port name \n", argv[0]);
 		exit(0);
 	}
 
-	sprintf(bufall, "[%s] :", argv[3]);  // bufall ÀÇ ¾ÕºÎºĞ¿¡ ÀÌ¸§À» ÀúÀå
+	sprintf(bufall, "[%s] :", argv[3]);  // bufall ì˜ ì•ë¶€ë¶„ì— ì´ë¦„ì„ ì €ì¥
 	namelen= strlen(bufall);
-	bufmsg = bufall+namelen;  // ¸Ş½ÃÁö ½ÃÀÛ ºÎºĞ ÁöÁ¤
+	bufmsg = bufall+namelen;  // ë©”ì‹œì§€ ì‹œì‘ ë¶€ë¶„ ì§€ì •
 
 	s = tcp_connect(AF_INET, argv[1], atoi(argv[2]));
 
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 		errquit("tcp_connect fail");
 
 	system("clear");
-	puts("¼­¹ö¿¡ Á¢¼Ó Áß ÀÔ´Ï´Ù.......");
+	puts("ì„œë²„ì— ì ‘ì† ì¤‘ ì…ë‹ˆë‹¤.......");
 
 	maxfdp1 = s + 1;
 	FD_ZERO(&read_fds);
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 			if ((nbyte = recv(s, bufmsg, MAXLINE, 0)) > 0)  {
 				bufmsg[nbyte] = 0;
 				printf("%s \n", bufmsg);
-//				printf("<¹øÈ£/¸í·É(go,exit)>: ");
+//				printf("<ë²ˆí˜¸/ëª…ë ¹(go,exit)>: ");
 			}
 		}//end if
 	
@@ -79,16 +79,16 @@ int main(int argc, char *argv[]) {
 int tcp_connect(int af, char *servip, unsigned short port) {
 	struct sockaddr_in servaddr;
 	int  s;
-    	// ¼ÒÄÏ »ı¼º
+    	// ì†Œì¼“ ìƒì„±
 	if ((s = socket(af, SOCK_STREAM, 0)) < 0)
     		return -1;
-    	// Ã¤ÆÃ ¼­¹öÀÇ ¼ÒÄÏÁÖ¼Ò ±¸Á¶Ã¼ servaddr ÃÊ±âÈ­
+    	// ì±„íŒ… ì„œë²„ì˜ ì†Œì¼“ì£¼ì†Œ êµ¬ì¡°ì²´ servaddr ì´ˆê¸°í™”
     	bzero((char *)&servaddr, sizeof(servaddr));
     	servaddr.sin_family = af;
     	inet_pton(AF_INET, servip, &servaddr.sin_addr);
     	servaddr.sin_port = htons(port);
 
-	// ¿¬°á¿äÃ»
+	// ì—°ê²°ìš”ì²­
 	if(connect(s, (struct sockaddr *)&servaddr, sizeof(servaddr))< 0)
 		return -1;
 	
