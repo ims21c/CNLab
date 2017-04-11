@@ -4,9 +4,9 @@
 #include <strings.h> // BSD에서 사용되는 POSIX로 구현된 string 헤더
 #include <fcntl.h>	// 파일컨트롤을 위한 헤더
 #include <sys/socket.h> // 소켓 프로그래밍을 위한 헤더
-#include <netinet/in.h>
-#include <sys/time.h>
-#include <unistd.h>
+#include <netinet/in.h> // 소켓 프로그래밍을 위한 헤더
+#include <sys/time.h>	// C언어 시간 출력
+#include <unistd.h>	//
 #include <arpa/inet.h>
 
 #define MAXLINE     1000
